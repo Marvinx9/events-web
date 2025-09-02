@@ -4,7 +4,7 @@ interface LessonProps {
   title: string;
   slug: string;
   availableAt: Date;
-  type: "Live" | "Class";
+  type: "LIVE" | "RECORD";
 }
 
 export function Lesson(props: LessonProps) {
@@ -27,7 +27,7 @@ export function Lesson(props: LessonProps) {
             </span>
           )}
           <span className="text-xs rounded px-2 py-[0.125rem] text-white border border-green-300 font-bold">
-            {props.type}
+            {props.type === "LIVE" ? "LIVE" : "PRATICAL CLASS"}
           </span>
         </header>
         <strong className="text-gray-200 mt-5 block">{props.title}</strong>

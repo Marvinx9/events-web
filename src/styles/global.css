@@ -1,5 +1,24 @@
 @import "tailwindcss";
 
 body {
-  @apply bg-zinc-900 text-zinc-100;
+  @apply bg-gray-900 text-gray-100;
+  -webkit-font-smoothing: antialiased;
+}
+
+@theme {
+  --default-font-family: "Roboto", "sans-serif";
+
+  --color-gray-100: #e1e1e6;
+  --color-gray-200: #c4c4cc;
+  --color-gray-300: #8d8d99;
+  --color-gray-500: #323238;
+  --color-gray-600: #29292e;
+  --color-gray-700: #121214;
+  --color-gray-900: #09090a;
+  --color-red-500: #f75a68;
+  --color-orange-500: #fba94c;
+  --color-blue-500: #81d8f7;
+  --color-green-300: #00b37e;
+  --color-green-500: #00875f;
+  --color-green-700: #015f43;
 }

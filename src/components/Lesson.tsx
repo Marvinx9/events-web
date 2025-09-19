@@ -12,7 +12,7 @@ export function Lesson(props: LessonProps) {
   const isLessonAvailable: boolean = isPast(props.availableAt);
   const availableDateFormatted = format(
     props.availableAt,
-    "EEEE' • 'MMMM d' • 'k'h'mm"
+    "EEEE', 'MMMM d' • 'hh:mm a'"
   );
 
   return (

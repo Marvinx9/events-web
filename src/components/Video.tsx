@@ -7,14 +7,65 @@ import {
 } from "phosphor-react";
 
 import "@vime/core/themes/default.css";
+import { gql, useQuery } from "@apollo/client";
 
-export function Video() {
+const GET_LESSON_BY_SLUG = gql`
+  query GetLessonBySlug($slug: String!) {
+    findLessonBySlug(slug: $slug) {
+      id
+      title
+      slug
+      video_id
+      teacher {
+        name
+        avatar_url
+        bio
+      }
+    }
+  }
+`;
+
+interface GetLessonBySlugResponse {
+  findLessonBySlug: {
+    title: string;
+    video_id: string;
+    description: string;
+    teacher: {
+      name: string;
+      avatar_url: string;
+      bio: string;
+    };
+  };
+}
+
+interface VideoProps {
+  lessonSlug: string;
+}
+
+export function Video(props: VideoProps) {
+  const { data, loading } = useQuery<GetLessonBySlugResponse>(
+    GET_LESSON_BY_SLUG,
+    {
+      variables: {
+        slug: props.lessonSlug,
+      },
+    }
+  );
+
+  if (loading || !data) {
+    return (
+      <div className="flex-1">
+        <p>Carregando...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1">
       <div className="bg-black flex justify-center">
         <div className="w-full max-w-[1100px] aspect-video">
-          <Player>
-            <Youtube videoId="p_heym7pmEk" />
+          <Player key={data.findLessonBySlug.video_id}>
+            <Youtube videoId={data.findLessonBySlug.video_id} />
             <DefaultUi />
           </Player>
         </div>
@@ -23,27 +74,24 @@ export function Video() {
         <div className="flex items-start gap-16">
           <div className="flex-1">
             <h1 className="text-2xl font-bold">
-              Class 01 - Opening Python Pro
+              {data.findLessonBySlug.title}
             </h1>
             <p className="mt-4 text-gray-200 leading-relaxed">
-              is simply dummy text of the printing and typesetting industry.
-              Lorem Ipsum has been the industry's standard dummy text ever since
-              the 1500s, when an unknown printer took a galley of type and
-              scrambled it to make a type specimen book
+              {data.findLessonBySlug.description}
             </p>
 
             <div className="flex items-center gap-4 mt-6">
               <img
                 className="h-16 w-16 rounded-full border-2 border-blue-500"
-                src="https://avatars.githubusercontent.com/u/132841689?v=4"
+                src={data.findLessonBySlug.teacher.avatar_url}
                 alt="avatar"
               />
               <div className="leading-relaxed">
                 <strong className="font-bold text-2lx block">
-                  Afrânio Dantas
+                  {data.findLessonBySlug.teacher.name}
                 </strong>
                 <span className="text-gray-200 text-sm block">
-                  Teacher of Python for AI
+                  {data.findLessonBySlug.teacher.bio}
                 </span>
               </div>
             </div>
